@@ -19,7 +19,7 @@
 }
 
 .Open {
-  transform: transfromX(0);
+  transform: translateX(0);
 }
 
 .Close {
