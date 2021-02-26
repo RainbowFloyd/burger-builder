@@ -6,17 +6,19 @@ import Auxiliary from '../Auxiliary/Auxiliary';
 const withErrorHandler = (WrappedCompenent, axios) => {
   return class extends Component {
     state = {
+      initialized: false,
       error: null
     }
 
     componentDidMount () {
-      axios.interceptors.request.use(req => {
+      this.requestInterceptor = axios.interceptors.request.use(req => {
         this.setState({error: null});
         return req;
       })
-      axios.interceptors.response.use(res => res, error => {
+      this.responseInterceptor = axios.interceptors.response.use(res => res, error => {
         this.setState({error: error});
       })
+      this.setState({initialized: true});
     }
 
     errorConfirmedHandler = () => {
@@ -24,6 +26,7 @@ const withErrorHandler = (WrappedCompenent, axios) => {
     }
 
     render () {
+      if (!this.state.initialized) return null;
       return (
         <Auxiliary>
           <Modal
